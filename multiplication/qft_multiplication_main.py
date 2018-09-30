@@ -6,7 +6,7 @@ using the Quantum Fourier Transform.
 """
 
 from qiskit import register
-import times
+import qft_multiplication
 
 #Getting user input: two numbers in binary form that will be stored as bit strings
 first = input("Enter a number with less than 7 digits.")
