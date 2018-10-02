@@ -74,21 +74,8 @@ def main():
         qc.measure(b[i], cl[i])
 
     #Import configuration and set API token and url
-    try:
-        import sys
-        sys.path.append("../")
-        import Qconfig 
-        qx_config = {
-            "APItoken": Qconfig.APItoken,
-            "url": Qconfig.config['url']
-        }
-    except Exception as e:
-        print(e)
-        qx_config = {
-            "APItoken": """be05aaea2eb2249e3dced60ccaa6c4104d11e55a35ac64b66f96578e787ba650294857f41ca2c70f34fba9f78fb5fa7e994c7525a3842eb0b74f9a277ee7a6e4""", #Setting API token manually
-            "url": "https://quantumexperience.ng.bluemix.net/api"
-        }
-    register(qx_config['APItoken'], qx_config['url'])
+    import Qconfig
+    register(Qconfig.APIToken, Qconfig.config['url'])
 
     #Set chosen backend and execute job
     num_shots = 2 #Setting the number of times to repeat measurement
