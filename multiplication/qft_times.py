@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-qft_multiplication.py: Multiplication using the Quantum Fourier Transform.
+qft_times.py: Multiplication using the Quantum Fourier Transform.
 """
 
 import math
@@ -45,7 +45,7 @@ def inverseQFT(qc, reg, n, pie):
     the set of operations applied in the createInputState function in reverse order.
     """
     for i in range(0, n):
-        qc.cu1(-1*pie/float(2**(n-i)), reg[n-(i+1)], reg[n])
+        qc.cu1(-1*pie/float(2**(n-i)), reg[i], reg[n])
     qc.h(reg[n])
 
 def decrement(qc, reg_c, reg_d, n, pie):
@@ -69,8 +69,8 @@ def multiply(first, second, product, n, m):
     first: bit string representing the multiplicand
     second: bit string representing the multiplier
     product: bit string representing the current accumulator value
-    n: integer representing the length of bit string first
-    m: integer representing the length of bit string second
+    n: integer representing the length of the bit string first
+    m: integer representing the length of the bit string second
 
     Returns:
     multiplier: the value of the multiplier after decrementing
@@ -118,23 +118,18 @@ def multiply(first, second, product, n, m):
     for i in range(0, m+n):
         inverseQFT(qc, a, i, pie)
     #Measuring the value of register a and storing it in register cl;
-    #Note that as the bits were in superposition, the noise present in the 
-    #circuit will result in the possible returning of 1s instead of 0s and
-    #vice versa
     for i in range(0, m+n):
         qc.measure(a[i], cl[i])
     #Measuring the value of register c and storing it in register cl2
     for i in range(0, m):
         qc.measure(c[i], cl2[i])
-    #We repeat the experiment 1024 times to ensure that the correct result,
-    #which will have the highest probability of occuring, has occured a 
-    #sufficiently larger amount of times than other results
+    #Execute program
     result = execute(qc, backend='ibmq_qasm_simulator', 
                       shots=1024).result()
     counts = result.get_counts("qc")
-    #Get the key(values of cl/cl2) which have occured the maximum amount of times
+    #Get the key(values of cl/cl2) 
     output = max(counts.items(), key=operator.itemgetter(1))[0]
-    #Split the result in the values of cl2 and cl
+    #Split output into the values of cl2 and cl
     multiplier, accumulator = str(output).split(" ")    
     return multiplier, accumulator
 

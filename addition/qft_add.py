@@ -13,7 +13,7 @@ from qiskit import register, available_backends, get_backend
 
 def createInputState(qc, reg, n, pie):
     """
-    Computes the quantumm Fourier transform of reg, one qubit at
+    Computes the quantum Fourier transform of reg, one qubit at
     a time.
     Apply one Hadamard gate to the nth qubit of the quantum register reg, and 
     then apply repeated phase rotations with parameters being pi divided by 
@@ -41,7 +41,7 @@ def inverseQFT(qc, reg, n, pie):
     of the register reg.
     """
     for i in range(0, n):
-        qc.cu1(-1*pie/float(2**(n-i)), reg[n-(i+1)], reg[n])
+        qc.cu1(-1*pie/float(2**(n-i)), reg[i], reg[n])
     qc.h(reg[n])
 
 def add(first, second, n):
@@ -71,7 +71,7 @@ def add(first, second, n):
     #Compute the inverse Fourier transform of register a
     for i in range(0, n+1):
         inverseQFT(qc, a, i, pie)
-
+    #Measure qubits
     for i in range(0, n+1):
         qc.measure(a[i], cl[i])
     print(qc.qasm())
@@ -86,6 +86,7 @@ def add(first, second, n):
     #Select result with maximum probabilities
     output = max(counts.items(), key=operator.itemgetter(1))[0]
     print(output)
+
 #Take two numbers as user input in binary form   
 first = input("Enter a number with less than 10 digits.")
 l1 = len(first)

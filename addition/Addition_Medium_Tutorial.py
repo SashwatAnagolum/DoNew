@@ -67,9 +67,7 @@ def main():
         qc.cx(c[(n-2)-i], b[(n-2)-i])
         qc.cx(a[(n-2)-i], b[(n-2)-i])
 
-    #Measure qubits, which forces them to revert to one of two possible states: |0> or |1>
-    #Since no superposition was created, all qubits are already in the |0> or |1> state
-    #So this effectively transfers the qubit states to the classical register
+    #Measure qubits
     for i in range(n+1):
         qc.measure(b[i], cl[i])
 
