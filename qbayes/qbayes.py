@@ -67,7 +67,7 @@ circ.u3(probToAngle(0.39), 0, 0, net[2])
 
 # Measure E, and rotate H to the P(1) value in the second row of the P(H|E) table condtioned on E
 circ.measure(net[1], cl[1])
-circ.u3(probToAngle(0.82) - probToAngle(0.39), 0, 0, net[2])
+circ.u3(probToAngle(0.82) - probToAngle(0.39), 0, 0, net[2]).c_if(cl, 2)
 
 # Sample by measuring the rest of the qubits
 circ.measure(net[0], cl[0])
@@ -78,7 +78,7 @@ backend = Aer.get_backend('qasm_simulator')
 
 # Run job many times to get multiple samples
 samples_list = []
-n_samples = 250
+n_samples = 50
 
 for i in range(n_samples):
     job = execute(circ, backend=backend, shots=1)
@@ -89,7 +89,7 @@ for i in range(n_samples):
 # Printing the number of useful samples and percentage of samples rejected
 print()
 print(n_samples, 'samples drawn:', len(samples_list), 'samples accepted,', n_samples-len(samples_list), 'samples rejected.' )
-print('Percentage of samples rejected: ', 100*(1 - (len(samples_list)/n_samples)), '%')
+print('Percentage of samples accepted: ', 100*((len(samples_list)/n_samples)), '%')
 
 # Computing P(H = 0| P = 1)
 p_H = 0
