@@ -96,7 +96,7 @@ for i in range(l1):
 
 for i in range(l2):
     if multiplier_in[i] == '1':
-        circ.x(multiplier[l1 - i - 1])
+        circ.x(multiplier[l2 - i - 1])
 
 multiplier_str = '1'
 # Perform repeated addition until the multiplier
